@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Misión Expotécnica: Informe y Presentación | Taller de Programación 3°</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0e27; --bg2:#10163a; --card:rgba(255,255,255,.05); --line:rgba(0,255,136,.25);
+    --accent:#00ff88; --accent2:#00d9ff; --text:#e6ebff; --muted:#93a0c8; --warn:#ffcc4d;
+    --font-title:'Orbitron','Segoe UI',sans-serif;
+    --font-mono:'JetBrains Mono','Courier New',monospace;
+    --font-body:'IBM Plex Sans','Segoe UI',Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:radial-gradient(1200px 600px at 20% -10%,#16205a 0%,var(--bg) 60%) fixed;color:var(--text);
+       font-family:var(--font-body);line-height:1.6;font-size:17px}
+  #progress{position:fixed;top:0;left:0;height:4px;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));z-index:50}
+  header{padding:56px 20px 28px;text-align:center;max-width:900px;margin:auto}
+  .tag{font-family:var(--font-mono);color:var(--accent);font-size:.8rem;letter-spacing:.15em;text-transform:uppercase}
+  h1{font-family:var(--font-title);font-weight:800;font-size:clamp(1.6rem,5vw,2.6rem);margin:.4em 0;line-height:1.2;
+     background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .sub{color:var(--muted);max-width:640px;margin:0 auto}
+  main{max-width:900px;margin:auto;padding:0 18px 80px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin:22px 0;
+        backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+  .card h2{font-family:var(--font-title);font-size:1.2rem;margin:0 0 .5em;color:var(--accent)}
+  .card h3{font-size:1.02rem;margin:1.1em 0 .3em;color:var(--accent2)}
+  .badge{display:inline-block;font-family:var(--font-mono);font-size:.75rem;color:var(--bg);background:var(--accent);
+         padding:2px 10px;border-radius:999px;margin-bottom:8px;font-weight:600}
+  .goal{border-left:4px solid var(--accent);padding:8px 14px;background:rgba(0,255,136,.07);border-radius:0 10px 10px 0}
+  .analogy{border-left:4px solid var(--accent2);padding:8px 14px;background:rgba(0,217,255,.07);border-radius:0 10px 10px 0;margin:12px 0}
+  .challenge{border:1px dashed var(--warn);border-radius:12px;padding:12px 16px;margin-top:14px;background:rgba(255,204,77,.06)}
+  .challenge b{color:var(--warn)}
+  label{display:block;font-size:.88rem;color:var(--muted);margin:12px 0 4px}
+  input[type=text],textarea{width:100%;background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.18);color:var(--text);
+        border-radius:10px;padding:10px 12px;font-family:var(--font-body);font-size:.98rem}
+  textarea{min-height:84px;resize:vertical}
+  input:focus,textarea:focus{outline:2px solid var(--accent);border-color:transparent}
+  .check{display:flex;gap:10px;align-items:flex-start;padding:8px 6px;border-radius:8px;cursor:pointer}
+  .check:hover{background:rgba(255,255,255,.04)}
+  .check input{margin-top:5px;accent-color:var(--accent);width:18px;height:18px;flex:none}
+  .check span{flex:1}
+  .check input:checked + span{color:var(--muted);text-decoration:line-through}
+  pre{background:#060919;border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:14px;overflow-x:auto;
+      font-family:var(--font-mono);font-size:.85rem;margin:10px 0;position:relative}
+  code{font-family:var(--font-mono);color:var(--accent)}
+  .copy{position:absolute;top:8px;right:8px;background:rgba(0,255,136,.15);color:var(--accent);border:1px solid var(--line);
+        border-radius:8px;padding:3px 10px;font-family:var(--font-mono);font-size:.72rem;cursor:pointer}
+  table{width:100%;border-collapse:collapse;margin:10px 0;font-size:.95rem}
+  th,td{text-align:left;padding:8px 10px;border-bottom:1px solid rgba(255,255,255,.1);vertical-align:top}
+  th{color:var(--accent2);font-family:var(--font-mono);font-size:.8rem;text-transform:uppercase}
+  .table-wrap{overflow-x:auto}
+  .btn{background:linear-gradient(90deg,var(--accent),var(--accent2));color:#04122a;border:0;border-radius:12px;
+       padding:12px 22px;font-family:var(--font-title);font-weight:800;cursor:pointer;font-size:.9rem}
+  .btn:hover{filter:brightness(1.1)}
+  .btn.ghost{background:transparent;color:var(--accent);border:1px solid var(--line)}
+  .meter{height:14px;background:rgba(255,255,255,.1);border-radius:999px;overflow:hidden;margin:10px 0}
+  .meter div{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .4s}
+  .saved{font-family:var(--font-mono);font-size:.75rem;color:var(--muted);text-align:right;min-height:1.2em}
+  .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--accent);color:#04122a;
+         padding:10px 20px;border-radius:12px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .3s;z-index:60}
+  .toast.show{opacity:1}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:640px){.two{grid-template-columns:1fr}}
+  footer{text-align:center;color:var(--muted);font-size:.85rem;padding:30px 16px 60px}
+  @media print{
+    body{background:#fff;color:#000} .card{border:1px solid #999;background:#fff} #progress,.btn,.copy,.toast{display:none}
+    h1,.card h2{color:#000;-webkit-text-fill-color:#000} textarea,input[type=text]{border:1px solid #666;background:#fff;color:#000}
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<header>
+  <div class="tag">Taller de Programación · 3° 2° B2 · Expotécnica 2026</div>
+  <h1>MISIÓN: CERRAR EL INFORME Y LA PRESENTACIÓN</h1>
+  <p class="sub">El martes 13 de octubre el profe está de licencia, pero el trabajo sigue. Esta guía te permite avanzar desde tu casa, a tu ritmo: terminás el informe y armás la presentación de tu proyecto. Cada misión es corta. Completá, tildá y avanzá.</p>
+</header>
+
+<main>
+
+  <div class="card">
+    <h2>Tu progreso</h2>
+    <div class="meter"><div id="meterBar"></div></div>
+    <div id="meterText" style="font-family:var(--font-mono);font-size:.85rem;color:var(--muted)">0 de 0 tareas completas</div>
+    <div class="saved" id="savedMsg"></div>
+  </div>
+
+  <div class="card goal">
+    <b>Objetivo:</b> al terminar esta guía vas a tener el informe casi listo y la presentación armada, con un guion para que cada integrante sepa qué decir.
+    <br><small style="color:var(--muted)">Todo lo que escribís se guarda solo en esta computadora. Usá siempre la misma máquina y el mismo navegador.</small>
+  </div>
+
+  <div class="card">
+    <h2>Trabajo desde casa</h2>
+    <p><b>Qué necesitás:</b> una computadora (o el celular para los borradores), internet y un programa para escribir el informe y las diapositivas.</p>
+    <p><b>Si algo no lo tenés en casa:</b> avanzá con lo que sí puedas. Escribí los borradores en el celular o en papel y sacales fotos. Lo importante es llegar con material para seguir.</p>
+    <p><b>Si el proyecto físico quedó en la escuela:</b> usá capturas del simulador (Wokwi o Tinkercad) y las fotos que ya tengas.</p>
+    <p><b>Para trabajar en equipo a distancia:</b> repartan las tareas y coordinen por el grupo o por videollamada.</p>
+    <p><b>Mostrá tu avance:</b> el martes 20 de octubre, en la clase de Taller de Programación. Anotá tus dudas en esta guía y llevalas.</p>
+  </div>
+
+  <!-- MISIÓN 0 -->
+  <section class="card" id="m0">
+    <span class="badge">MISIÓN 0 · 5 min</span>
+    <h2>Armá el equipo</h2>
+    <div class="analogy"><b>Analogía:</b> un equipo de videojuego tiene roles: nadie hace todo. Un proyecto técnico también.</div>
+    <label>Nombre del proyecto</label>
+    <input type="text" data-save="proyecto" placeholder="Ej: Sistema de riego automático para invernadero">
+    <label>Integrantes del equipo</label>
+    <input type="text" data-save="integrantes" placeholder="Nombres y apellidos">
+    <div class="two">
+      <div><label>Quién redacta el informe</label><input type="text" data-save="rol_informe"></div>
+      <div><label>Quién arma las diapositivas</label><input type="text" data-save="rol_slides"></div>
+      <div><label>Quién prepara el código y las capturas</label><input type="text" data-save="rol_codigo"></div>
+      <div><label>Quién revisa ortografía y coherencia</label><input type="text" data-save="rol_revision"></div>
+    </div>
+    <div class="challenge"><b>Mini-desafío:</b> si el equipo es de dos personas, repartan los roles igual. Alguien tiene que hacer dos. Acuerden por dónde se van a comunicar mientras trabajan desde casa.</div>
+    <div style="margin-top:14px">
+      <button class="btn" id="btnMailEquipo" type="button">Enviar equipo al profe por mail</button>
+      <p style="color:var(--muted);font-size:.85rem;margin:8px 0 0">Se abre tu aplicación de correo con el mensaje listo. Tenés que apretar "enviar". Si no se abre, el texto queda copiado para que lo pegues en un mail o mensaje.</p>
+    </div>
+    <label class="check" style="margin-top:12px"><input type="checkbox" data-task="m0"><span>Misión 0 completa: equipo y roles definidos</span></label>
+  </section>
+
+  <!-- MISIÓN 1 -->
+  <section class="card" id="m1">
+    <span class="badge">MISIÓN 1 · 30 min</span>
+    <h2>El informe: contá tu proyecto como un plano</h2>
+    <div class="analogy"><b>Analogía:</b> un informe técnico es como el manual de un electrodoméstico. Alguien que nunca vio tu proyecto tiene que entender qué hace, de qué está hecho y cómo se usa.</div>
+    <p>Respondé cada pregunta con 3 a 5 oraciones. Una idea por oración. Después las pasás al documento final.</p>
+
+    <h3>1.1 Problema y objetivo</h3>
+    <label>¿Qué problema real resuelve tu proyecto? ¿Para quién? ¿Qué querían lograr?</label>
+    <textarea data-save="inf_problema" placeholder="Ej: En un invernadero se pierde agua porque el riego es manual. Queremos que riegue solo cuando la tierra está seca."></textarea>
+
+    <h3>1.2 Materiales y componentes</h3>
+    <label>Listá los componentes (placa, sensores, actuadores, cables, software) y para qué sirve cada uno.</label>
+    <textarea data-save="inf_materiales" placeholder="Arduino UNO: el cerebro que lee y decide.&#10;Sensor de humedad: mide qué tan seca está la tierra.&#10;..."></textarea>
+
+    <h3>1.3 Cómo funciona (en palabras)</h3>
+    <label>Explicá el funcionamiento paso a paso, de la entrada a la salida: ¿qué mide, qué decide, qué hace?</label>
+    <textarea data-save="inf_funcionamiento" placeholder="1. El sensor mide...&#10;2. Python/Arduino compara...&#10;3. Si..., entonces..."></textarea>
+
+    <h3>1.4 Pruebas y problemas que resolvieron</h3>
+    <label>¿Qué probaron? ¿Qué falló? ¿Cómo lo arreglaron? Los errores resueltos suman mucho.</label>
+    <textarea data-save="inf_pruebas" placeholder="Al principio el sensor daba valores raros porque..."></textarea>
+
+    <h3>1.5 Conclusiones</h3>
+    <label>¿Se cumplió el objetivo? ¿Qué aprendieron? ¿Qué mejorarían con más tiempo?</label>
+    <textarea data-save="inf_conclusion"></textarea>
+
+    <h3>Estructura final del documento</h3>
+    <div class="table-wrap">
+    <table>
+      <tr><th>Sección</th><th>Qué lleva</th></tr>
+      <tr><td>Carátula</td><td>Escuela, materia, curso, proyecto, integrantes, fecha</td></tr>
+      <tr><td>Introducción</td><td>Lo de 1.1 (problema y objetivo)</td></tr>
+      <tr><td>Desarrollo</td><td>Materiales (1.2), funcionamiento (1.3), esquema de conexión, código</td></tr>
+      <tr><td>Pruebas</td><td>Lo de 1.4, con fotos o capturas</td></tr>
+      <tr><td>Conclusiones</td><td>Lo de 1.5</td></tr>
+      <tr><td>Glosario</td><td>Los términos técnicos que aprendieron (Misión 4)</td></tr>
+    </table>
+    </div>
+
+    <div class="challenge"><b>Mini-desafío:</b> leé en voz alta tu "1.3 Cómo funciona" a alguien de tu equipo. Si no entiende, reescribilo con palabras más simples.</div>
+
+    <label class="check" style="margin-top:12px"><input type="checkbox" data-task="m1a"><span>Completé las respuestas 1.1 a 1.5</span></label>
+    <label class="check"><input type="checkbox" data-task="m1b"><span>Pasé todo al documento final con la estructura de la tabla</span></label>
+    <label class="check"><input type="checkbox" data-task="m1c"><span>Agregué la carátula con todos los datos</span></label>
+  </section>
+
+  <!-- MISIÓN 2 -->
+  <section class="card" id="m2">
+    <span class="badge">MISIÓN 2 · 20 min</span>
+    <h2>Evidencias: código, esquema y fotos</h2>
+    <div class="analogy"><b>Analogía:</b> son las pruebas de un juicio. Sin evidencias, tu informe es solo una opinión.</div>
+    <p>Un informe de programación sin código documentado no está completo. Revisá que tu código tenga comentarios que expliquen el <i>por qué</i>, no solo el <i>qué</i>.</p>
+    <pre><button class="copy">copiar</button><code># MAL: no explica nada
+x = leer()
+if x &gt; 500:
+    y = 1
+
+# BIEN: explica la decisión
+humedad = leer_sensor_humedad()   # valor de 0 (mojado) a 1023 (seco)
+if humedad &gt; 500:                 # 500 = umbral que calibramos probando en la maceta
+    bomba_encendida = True        # la tierra está seca: activamos el riego</code></pre>
+    <div class="challenge"><b>Mini-desafío:</b> elegí la parte más importante de tu código y agregale comentarios como en el ejemplo "BIEN".</div>
+    <label>Pegá acá el fragmento comentado que vas a mostrar en el informe (opcional, para tenerlo a mano)</label>
+    <textarea data-save="codigo_fragmento" style="font-family:var(--font-mono);font-size:.85rem"></textarea>
+
+    <label class="check" style="margin-top:12px"><input type="checkbox" data-task="m2a"><span>El código tiene comentarios claros en las partes clave</span></label>
+    <label class="check"><input type="checkbox" data-task="m2b"><span>Tengo una foto o dibujo del esquema de conexión (se ve claro qué va a qué pin)</span></label>
+    <label class="check"><input type="checkbox" data-task="m2c"><span>Tengo al menos 2 fotos o capturas del proyecto funcionando (del proyecto real o del simulador)</span></label>
+  </section>
+
+  <!-- MISIÓN 3 -->
+  <section class="card" id="m3">
+    <span class="badge">MISIÓN 3 · 30 min</span>
+    <h2>La presentación: 8 diapositivas, una idea cada una</h2>
+    <div class="analogy"><b>Analogía:</b> una diapositiva es un cartel de ruta, no un libro. Se lee de un vistazo mientras vos explicás.</div>
+
+    <div class="table-wrap">
+    <table>
+      <tr><th>#</th><th>Diapositiva</th><th>Qué lleva</th></tr>
+      <tr><td>1</td><td>Portada</td><td>Nombre del proyecto, integrantes, curso, escuela</td></tr>
+      <tr><td>2</td><td>El problema</td><td>Una frase y una imagen que lo muestre</td></tr>
+      <tr><td>3</td><td>Nuestra solución</td><td>Qué hace el proyecto, en una oración</td></tr>
+      <tr><td>4</td><td>Componentes</td><td>Fotos con nombre de cada pieza clave</td></tr>
+      <tr><td>5</td><td>Cómo funciona</td><td>Diagrama simple: entrada → decisión → salida</td></tr>
+      <tr><td>6</td><td>El código</td><td>Solo el fragmento más importante, con letra grande</td></tr>
+      <tr><td>7</td><td>Demostración</td><td>Foto, video corto o "demo en vivo"</td></tr>
+      <tr><td>8</td><td>Conclusiones</td><td>Qué logramos, qué aprendimos, qué mejoraríamos</td></tr>
+    </table>
+    </div>
+
+    <h3>Reglas de oro</h3>
+    <label class="check"><input type="checkbox" data-task="r1"><span>Máximo 20 palabras por diapositiva (el resto lo decís vos)</span></label>
+    <label class="check"><input type="checkbox" data-task="r2"><span>Letra grande: se tiene que leer desde el fondo del salón</span></label>
+    <label class="check"><input type="checkbox" data-task="r3"><span>Fondo y letra con buen contraste (nada de amarillo sobre blanco)</span></label>
+    <label class="check"><input type="checkbox" data-task="r4"><span>Una imagen o diagrama propio por diapositiva, mejor que texto</span></label>
+
+    <div class="challenge"><b>Mini-desafío:</b> escribí en una sola oración el mensaje principal de la diapositiva 3. Si necesitás dos oraciones, todavía no está clara la idea.</div>
+    <label>Mi "nuestra solución" en una oración</label>
+    <input type="text" data-save="slide3">
+
+    <label class="check" style="margin-top:12px"><input type="checkbox" data-task="m3a"><span>Armé las 8 diapositivas (en LibreOffice Impress, PowerPoint o Google Slides)</span></label>
+    <label class="check"><input type="checkbox" data-task="m3b"><span>Revisé que ninguna tenga más de 20 palabras</span></label>
+  </section>
+
+  <!-- MISIÓN 4 -->
+  <section class="card" id="m4">
+    <span class="badge">MISIÓN 4 · 15 min</span>
+    <h2>Glosario del proyecto</h2>
+    <p>Como en cada clase: sumá al glosario los términos técnicos que usaron en el proyecto. Explicalos como se los explicarías a un compañero de otro curso.</p>
+    <label>Mínimo 5 términos (formato: <code>término: qué significa en una oración</code>)</label>
+    <textarea data-save="glosario" style="min-height:140px" placeholder="Sensor: dispositivo que mide algo del mundo real y lo convierte en un número.&#10;Actuador: ...&#10;Pin digital: ...&#10;Umbral: ...&#10;PyFirmata: ..."></textarea>
+    <label class="check" style="margin-top:12px"><input type="checkbox" data-task="m4"><span>Glosario con al menos 5 términos listo (también va al final del informe)</span></label>
+  </section>
+
+  <!-- MISIÓN 5 -->
+  <section class="card" id="m5">
+    <span class="badge">MISIÓN 5 · 20 min</span>
+    <h2>El guion: que todos hablen</h2>
+    <div class="analogy"><b>Analogía:</b> como en un partido, cada jugador tiene su posición. Si todos van a la pelota, se pisan.</div>
+    <p>Repartan las diapositivas entre los integrantes. Cada uno escribe lo que va a decir con sus palabras, sin leer la diapositiva. Duración objetivo total: <b>5 minutos</b>.</p>
+    <label>Quién habla en cada diapositiva y 2 ideas clave para decir</label>
+    <textarea data-save="guion" style="min-height:160px" placeholder="Diap. 1-2 (Nombre): presentar el equipo y el problema...&#10;Diap. 3-5 (Nombre): ...&#10;Diap. 6-8 (Nombre): ..."></textarea>
+    <div class="challenge"><b>Mini-desafío:</b> ensayen una vez completa con el celular como cronómetro. Si no pueden juntarse, cada uno ensaya su parte y la graba en audio. Anoten cuánto tardó cada parte: <input type="text" data-save="tiempo" style="width:140px;display:inline-block" placeholder="ej: 6 min 10 s"></div>
+    <label class="check" style="margin-top:12px"><input type="checkbox" data-task="m5a"><span>Todos los integrantes tienen una parte para exponer</span></label>
+    <label class="check"><input type="checkbox" data-task="m5b"><span>Hicimos un ensayo con cronómetro (juntos, por videollamada o con audios)</span></label>
+  </section>
+
+  <!-- JEFE FINAL -->
+  <section class="card" id="boss">
+    <span class="badge">JEFE FINAL</span>
+    <h2>Autoevaluación del equipo</h2>
+    <p>Antes de cerrar esta guía, revisá con honestidad. Esto no es una nota: es para saber qué te falta.</p>
+    <label class="check"><input type="checkbox" data-task="f1"><span>Mi informe se entiende sin que yo esté al lado explicándolo</span></label>
+    <label class="check"><input type="checkbox" data-task="f2"><span>Mi presentación cuenta una historia: problema, solución, demostración, conclusión</span></label>
+    <label class="check"><input type="checkbox" data-task="f3"><span>Puedo explicar con mis palabras qué hace cada línea importante de mi código</span></label>
+    <label class="check"><input type="checkbox" data-task="f4"><span>Guardé el informe y la presentación con nombre claro (ej: Informe_NombreProyecto.docx)</span></label>
+
+    <label>¿Qué le falta todavía a tu equipo? (para retomar con el profe)</label>
+    <textarea data-save="pendientes" placeholder="Ej: falta la foto del esquema y ensayar la demo."></textarea>
+
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px">
+      <button class="btn" id="btnResumen">Copiar resumen de avance</button>
+      <button class="btn ghost" id="btnPrint">Imprimir / guardar PDF</button>
+      <button class="btn ghost" id="btnReset">Borrar todo</button>
+    </div>
+    <p style="color:var(--muted);font-size:.88rem;margin-top:12px">El resumen copiado queda listo para pegar en un mensaje o documento y mostrárselo al profe cuando vuelva.</p>
+  </section>
+
+  <div class="card" style="text-align:center">
+    <b style="color:var(--accent)">Muy buen trabajo.</b> Un proyecto bien documentado vale tanto como uno que funciona. Lo que hoy dejás escrito es lo que mañana te va a salvar en la Expotécnica.
+  </div>
+
+</main>
+
+<footer>Prof. Pablo Limardo · Escuela Industrial N° 9 "15 de Noviembre"</footer>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  var KEY = 'expo2026_3ro_';
+  var toastEl = document.getElementById('toast');
+  var savedMsg = document.getElementById('savedMsg');
+
+  function toast(msg){
+    toastEl.textContent = msg; toastEl.classList.add('show');
+    setTimeout(function(){toastEl.classList.remove('show')}, 1800);
+  }
+  function store(k,v){ try{ localStorage.setItem(KEY+k,v); return true }catch(e){ return false } }
+  function load(k){ try{ return localStorage.getItem(KEY+k) }catch(e){ return null } }
+
+  var fields = document.querySelectorAll('[data-save]');
+  var tasks  = document.querySelectorAll('[data-task]');
+
+  // Cargar lo guardado
+  fields.forEach(function(el){
+    var v = load('f_'+el.dataset.save);
+    if(v !== null) el.value = v;
+    el.addEventListener('input', function(){
+      var ok = store('f_'+el.dataset.save, el.value);
+      savedMsg.textContent = ok ? 'Guardado automático ✓' : 'No se pudo guardar: copiá tu trabajo a un documento';
+    });
+  });
+  tasks.forEach(function(el){
+    el.checked = load('t_'+el.dataset.task) === '1';
+    el.addEventListener('change', function(){
+      store('t_'+el.dataset.task, el.checked ? '1' : '0');
+      updateMeter();
+    });
+  });
+
+  function updateMeter(){
+    var total = tasks.length, done = 0;
+    tasks.forEach(function(t){ if(t.checked) done++ });
+    var pct = total ? Math.round(done/total*100) : 0;
+    document.getElementById('meterBar').style.width = pct+'%';
+    document.getElementById('meterText').textContent = done+' de '+total+' tareas completas ('+pct+'%)';
+    if(pct === 100 && load('celebrated') !== '1'){ store('celebrated','1'); toast('¡Misión cumplida! Equipo imparable.'); }
+  }
+  updateMeter();
+
+  // Barra de progreso de scroll
+  window.addEventListener('scroll', function(){
+    var h = document.documentElement;
+    var p = h.scrollTop / ((h.scrollHeight - h.clientHeight) || 1) * 100;
+    document.getElementById('progress').style.width = p+'%';
+  });
+
+  // Botones copiar código
+  document.querySelectorAll('.copy').forEach(function(b){
+    b.addEventListener('click', function(){
+      var code = b.parentElement.querySelector('code').innerText;
+      copyText(code, 'Código copiado');
+    });
+  });
+
+  function copyText(text, okMsg){
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(function(){ toast(okMsg) }, function(){ fallback(text, okMsg) });
+    } else { fallback(text, okMsg) }
+  }
+  function fallback(text, okMsg){
+    var ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta);
+    ta.select(); try{ document.execCommand('copy'); toast(okMsg) }catch(e){ toast('No se pudo copiar') }
+    document.body.removeChild(ta);
+  }
+
+  // Resumen de avance
+  document.getElementById('btnResumen').addEventListener('click', function(){
+    function g(k){ return (load('f_'+k) || '').trim() || '(sin completar)' }
+    var done = 0; tasks.forEach(function(t){ if(t.checked) done++ });
+    var txt = 'RESUMEN DE AVANCE - Taller de Programación 3° 2° B2\n' +
+      'Proyecto: '+g('proyecto')+'\nIntegrantes: '+g('integrantes')+'\n' +
+      'Tareas completas: '+done+' de '+tasks.length+'\n\n' +
+      'Nuestra solución: '+g('slide3')+'\n' +
+      'Tiempo del ensayo: '+g('tiempo')+'\n' +
+      'Pendientes: '+g('pendientes');
+    copyText(txt, 'Resumen copiado');
+  });
+  // Enviar datos del equipo por mail (abre la app de correo del estudiante)
+  document.getElementById('btnMailEquipo').addEventListener('click', function(){
+    function g(k){ return (load('f_'+k) || '').trim() }
+    if(!g('proyecto') || !g('integrantes')){ toast('Completá el nombre del proyecto y los integrantes'); return; }
+    var cuerpo = 'EQUIPO - Taller de Programación 3° 2° B2 - Expotécnica 2026\n\n' +
+      'Proyecto: '+g('proyecto')+'\n' +
+      'Integrantes: '+g('integrantes')+'\n\n' +
+      'Redacta el informe: '+(g('rol_informe')||'-')+'\n' +
+      'Arma las diapositivas: '+(g('rol_slides')||'-')+'\n' +
+      'Código y capturas: '+(g('rol_codigo')||'-')+'\n' +
+      'Revisión: '+(g('rol_revision')||'-')+'\n';
+    var asunto = 'Equipo Expotécnica 3° 2° B2 - '+g('proyecto');
+    copyText(cuerpo, 'Texto copiado por si no se abre tu correo');
+    window.location.href = 'mailto:plimardo@gmail.com?subject='+encodeURIComponent(asunto)+'&body='+encodeURIComponent(cuerpo);
+  });
+
+  document.getElementById('btnPrint').addEventListener('click', function(){ window.print() });
+  document.getElementById('btnReset').addEventListener('click', function(){
+    if(confirm('¿Seguro que querés borrar todo lo que escribiste y tildaste en esta computadora?')){
+      fields.forEach(function(el){ el.value=''; try{localStorage.removeItem(KEY+'f_'+el.dataset.save)}catch(e){} });
+      tasks.forEach(function(el){ el.checked=false; try{localStorage.removeItem(KEY+'t_'+el.dataset.task)}catch(e){} });
+      try{localStorage.removeItem(KEY+'celebrated')}catch(e){}
+      updateMeter(); toast('Todo borrado');
+    }
+  });
+})();
+</script>
+</body>
+</html>
